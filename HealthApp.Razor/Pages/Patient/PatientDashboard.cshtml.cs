@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HealthApp.Razor.Pages
+namespace HealthApp.Razor.Pages.Patient
 {
-    [Authorize(Roles = "Doctor")]
-    public class DoctorModel : PageModel
+    [Authorize(Roles = "Patient")]
+    public class PatientModel : PageModel
     {
         public void OnGet()
         {

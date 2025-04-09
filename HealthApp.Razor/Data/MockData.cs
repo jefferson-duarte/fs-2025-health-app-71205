@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using HealthApp.Domain;
+using HealthApp.Domain.Models;
 
 namespace HealthApp.Razor.Data
 {

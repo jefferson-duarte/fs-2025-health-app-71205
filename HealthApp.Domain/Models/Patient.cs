@@ -1,4 +1,4 @@
-﻿namespace HealthApp.Domain
+﻿namespace HealthApp.Domain.Models
 {
     public class Patient
     {

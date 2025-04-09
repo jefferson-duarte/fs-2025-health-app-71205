@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using HealthApp.Razor.Data;
 using Microsoft.AspNetCore.Authorization;
 
-namespace HealthApp.Razor.Pages
+namespace HealthApp.Razor.Pages.Doctor
 {
     [Authorize(Roles = "Admin")]
     public class DoctorPatientListingModel : PageModel
     {
-        private readonly HealthApp.Razor.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DoctorPatientListingModel(HealthApp.Razor.Data.ApplicationDbContext context)
+        public DoctorPatientListingModel(ApplicationDbContext context)
         {
             _context = context;
         }
