@@ -32,7 +32,7 @@
                     <tr>
                         <td>@appointment.Patient.FirstName @appointment.Patient.LastName</td>
                         <td>@appointment.Patient.Email</td>
-                        <td>@appointment.AppointmentDate.ToString("MM/dd/yyyy HH:mm")</td>
+                        <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@appointment.Status</td>
                         <td>
                             @if (!appointment.IsCanceled && appointment.Status == "Pending")
@@ -55,5 +55,16 @@
                 }
             </tbody>
         </table>
+
+        <nav>
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     }
 }

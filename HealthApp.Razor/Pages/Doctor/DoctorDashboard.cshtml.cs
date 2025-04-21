@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using HealthApp.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Drawing.Printing;
 
 namespace HealthApp.Razor.Pages.Doctor
 {
@@ -21,18 +23,28 @@ namespace HealthApp.Razor.Pages.Doctor
         }
 
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public int TotalPages { get; set; }
+        public int CurrentPage { get; set; } = 1;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNumber = 1)
         {
             var userId = _userManager.GetUserId(User);
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.UserId == userId);
 
             if (doctor != null)
             {
-                Appointments = await _context.Appointments
-                    .Include(a => a.Patient)
-                    .Where(a => a.DoctorId == doctor.Id)
+                int pageSize = 5;
+                var query = _context.Appointments
+                    .Include(p => p.Patient)
+                    .Where(p => p.DoctorId == doctor.Id);
+
+                Appointments = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
                     .ToListAsync();
+
+                TotalPages = (int)Math.Ceiling(await query.CountAsync() / (double)pageSize);
+                CurrentPage = pageNumber;
             }
         }
 
