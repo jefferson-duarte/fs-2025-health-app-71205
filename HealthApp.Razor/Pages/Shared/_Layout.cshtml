@@ -30,22 +30,22 @@
                             if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin">Admin</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Admin">Admin</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/DoctorPatientListing">Doctor Patient</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/DoctorPatientListing">Doctor Patient</a>
                                 </li>
                             }
                             if (User.IsInRole("Doctor"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Doctor">Doctor</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Doctor/Doctor">Doctor</a>
                                 </li>
                             }
                             if (User.IsInRole("Patient"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Patient">Patient</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Patient/PatientDashboard">Patient</a>
                                 </li>
                             }
                         }

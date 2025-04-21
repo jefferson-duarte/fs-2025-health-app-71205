@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HealthApp.Razor.Data;
 using Microsoft.AspNetCore.Authorization;
 
-namespace HealthApp.Razor.Pages.Doctor
+namespace HealthApp.Razor.Pages.Admin
 {
     [Authorize(Roles = "Admin")]
     public class DoctorPatientListingModel : PageModel

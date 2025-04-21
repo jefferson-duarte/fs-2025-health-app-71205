@@ -41,7 +41,7 @@ namespace HealthApp.Razor.Data
                     await userManager.AddToRoleAsync(user, HealthAppRoles.Admin);
                 }
 
-                string doctor = "doctor01@healthapp.com";
+                string doctor = "doctor@healthapp.com";
                 if (await userManager.FindByEmailAsync(doctor) == null)
                 {
 
@@ -51,7 +51,7 @@ namespace HealthApp.Razor.Data
 
 
 
-                    string patient = "patient01@healthapp.com";
+                    string patient = "patient@healthapp.com";
                     if (await userManager.FindByEmailAsync(patient) == null)
                     {
 
@@ -70,39 +70,6 @@ namespace HealthApp.Razor.Data
                         await context.SaveChangesAsync();
                     }
                 }
-
-                string doctor2 = "doctor02@healthapp.com";
-                if (await userManager.FindByEmailAsync(doctor2) == null)
-                {
-
-                    var userDoctor = new IdentityUser { UserName = doctor2, Email = doctor2, EmailConfirmed = true };
-                    await userManager.CreateAsync(userDoctor, genericPassword);
-                    await userManager.AddToRoleAsync(userDoctor, HealthAppRoles.Doctor);
-
-
-
-                    string patient2 = "patient02@healthapp.com";
-                    if (await userManager.FindByEmailAsync(patient2) == null)
-                    {
-
-                        var userPatient = new IdentityUser { UserName = patient2, Email = patient2, EmailConfirmed = true };
-                        await userManager.CreateAsync(userPatient, genericPassword);
-                        await userManager.AddToRoleAsync(userPatient, HealthAppRoles.Patient);
-
-
-                        var doctorPatient = new DoctorPatient
-                        {
-                            DoctorId = userDoctor.Id,
-                            PatientId = userPatient.Id
-                        };
-
-                        context.DoctorPatient.Add(doctorPatient);
-                        await context.SaveChangesAsync();
-                    }
-
-                }
-
-
             }
         }
     }

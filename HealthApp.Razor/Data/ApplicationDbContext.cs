@@ -6,6 +6,7 @@ namespace HealthApp.Razor.Data;
 public class ApplicationDbContext : IdentityDbContext
 {
     public DbSet<DoctorPatient> DoctorPatient { get; set; } = default!;
+    public object Appointments { get; internal set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
