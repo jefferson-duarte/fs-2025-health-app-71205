@@ -16,7 +16,6 @@ namespace HealthApp.Razor.Data
             {
                 patients.Add(new Patient
                 {
-                    Id = Guid.NewGuid().ToString(),
                     FirstName = faker.Name.FirstName(),
                     LastName = faker.Name.LastName(),
                     Email = faker.Internet.Email().ToLower()

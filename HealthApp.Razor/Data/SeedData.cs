@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HealthApp.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthApp.Razor.Data
 {
@@ -29,46 +30,80 @@ namespace HealthApp.Razor.Data
                     }
                 }
 
-                string adminUserName = "admin@healthapp.com";
-                string adminUserEmail = "admin@healthapp.com";
-                string genericPassword = "Letmein01*";
+                string doctor = "doctor@healthapp.com";
+                var userDoctor = await userManager.FindByEmailAsync(doctor);
 
-                if (await userManager.FindByEmailAsync(adminUserEmail) == null)
+                if (userDoctor == null)
                 {
+                    var newDoctor = new IdentityUser
+                    {
+                        UserName = doctor,
+                        Email = doctor,
+                        EmailConfirmed = true
+                    };
 
-                    var user = new IdentityUser { UserName = adminUserName, Email = adminUserEmail, EmailConfirmed = true };
-                    await userManager.CreateAsync(user, genericPassword);
-                    await userManager.AddToRoleAsync(user, HealthAppRoles.Admin);
+                    await userManager.CreateAsync(newDoctor, "Letmein01*");
+                    await userManager.AddToRoleAsync(newDoctor, HealthAppRoles.Doctor);
+
+                    userDoctor = newDoctor;
                 }
 
-                string doctor = "doctor@healthapp.com";
-                if (await userManager.FindByEmailAsync(doctor) == null)
+                if (!context.Doctors.Any(d => d.UserId == userDoctor.Id))
                 {
-
-                    var userDoctor = new IdentityUser { UserName = doctor, Email = doctor, EmailConfirmed = true };
-                    await userManager.CreateAsync(userDoctor, genericPassword);
-                    await userManager.AddToRoleAsync(userDoctor, HealthAppRoles.Doctor);
-
-
-
-                    string patient = "patient@healthapp.com";
-                    if (await userManager.FindByEmailAsync(patient) == null)
+                    var doctorEntity = new Doctor
                     {
+                        Name = "Dr. Carlos Pereira",
+                        UserId = userDoctor.Id
+                    };
 
-                        var userPatient = new IdentityUser { UserName = patient, Email = patient, EmailConfirmed = true };
-                        await userManager.CreateAsync(userPatient, genericPassword);
-                        await userManager.AddToRoleAsync(userPatient, HealthAppRoles.Patient);
+                    context.Doctors.Add(doctorEntity);
+                    await context.SaveChangesAsync();
+                }
+
+                string patientEmail = "patient@healthapp.com";
+                var userPatient = await userManager.FindByEmailAsync(patientEmail);
+
+                if (userPatient == null)
+                {
+                    var newPatient = new IdentityUser
+                    {
+                        UserName = patientEmail,
+                        Email = patientEmail,
+                        EmailConfirmed = true
+                    };
+
+                    await userManager.CreateAsync(newPatient, "Letmein01*");
+                    await userManager.AddToRoleAsync(newPatient, HealthAppRoles.Patient);
+
+                    userPatient = newPatient;
+                }
+
+                if (!context.Patients.Any(p => p.UserId == userPatient.Id))
+                {
+                    var patientEntity = new Patient
+                    {
+                        FirstName = "John",
+                        LastName = "Doe",
+                        Email = userPatient.Email,
+                        UserId = userPatient.Id
+                    };
+
+                    context.Patients.Add(patientEntity);
+                    await context.SaveChangesAsync();
+                }
 
 
-                        var doctorPatient = new DoctorPatient
-                        {
-                            DoctorId = userDoctor.Id,
-                            PatientId = userPatient.Id
-                        };
 
-                        context.DoctorPatient.Add(doctorPatient);
-                        await context.SaveChangesAsync();
-                    }
+                if (!context.DoctorPatient.Any(dp => dp.DoctorId == userDoctor.Id && dp.PatientId == userPatient.Id))
+                {
+                    var doctorPatient = new DoctorPatient
+                    {
+                        DoctorId = userDoctor.Id,
+                        PatientId = userPatient.Id
+                    };
+
+                    context.DoctorPatient.Add(doctorPatient);
+                    await context.SaveChangesAsync();
                 }
             }
         }

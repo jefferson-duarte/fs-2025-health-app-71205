@@ -21,4 +21,9 @@
     <ProjectReference Include="..\HealthApp.Domain\HealthApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

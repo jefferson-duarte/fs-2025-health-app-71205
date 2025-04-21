@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HealthApp.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthApp.Razor.Data;
@@ -6,7 +7,9 @@ namespace HealthApp.Razor.Data;
 public class ApplicationDbContext : IdentityDbContext
 {
     public DbSet<DoctorPatient> DoctorPatient { get; set; } = default!;
-    public object Appointments { get; internal set; }
+    public DbSet<Appointment> Appointments { get; set; } = default!;
+    public DbSet<Doctor> Doctors { get; set; } = default!;
+    public DbSet<Patient> Patients { get; set; } = default!;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
