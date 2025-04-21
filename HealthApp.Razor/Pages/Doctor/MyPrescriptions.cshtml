@@ -1,0 +1,38 @@
+﻿@page "/Doctor/MyPrescriptions"
+@model HealthApp.Razor.Pages.Doctor.MyPrescriptionsModel
+
+@{
+
+    <h2>My Prescriptions</h2>
+
+    @if (Model.Prescriptions.Count == 0)
+    {
+        <p>You haven't issued any prescriptions yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Medication</th>
+                    <th>Dosage</th>
+                    <th>Date Issued</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prescription in Model.Prescriptions)
+                {
+                    <tr>
+                        <td>@prescription.Patient.FirstName @prescription.Patient.LastName</td>
+                        <td>@prescription.Medication</td>
+                        <td>@prescription.Dosage</td>
+                        <td>@prescription.DateIssued.ToString("dd/MM/yyyy")</td>
+                        <td>@prescription.Notes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

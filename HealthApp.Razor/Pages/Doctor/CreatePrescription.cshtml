@@ -1,0 +1,36 @@
+﻿@page "/CreatePrescription"
+@model HealthApp.Razor.Pages.Doctor.CreatePrescriptionModel
+@{
+    <h2>Create Prescription</h2>
+
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div>
+            <label for="patient">Select Patient:</label>
+            <select asp-for="Prescription.PatientId" asp-items="Model.Patients">
+                <option value="">-- Select --</option>
+            </select>
+            <span asp-validation-for="Prescription.PatientId" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label for="medication">Medication:</label>
+            <input asp-for="Prescription.Medication" class="form-control" />
+            <span asp-validation-for="Prescription.Medication" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label for="dosage">Dosage Instructions:</label>
+            <input asp-for="Prescription.Dosage" class="form-control" />
+            <span asp-validation-for="Prescription.Dosage" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label for="notes">Additional Notes:</label>
+            <textarea asp-for="Prescription.Notes" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+}

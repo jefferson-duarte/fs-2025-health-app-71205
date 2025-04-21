@@ -1,51 +1,59 @@
 ﻿@page "/DoctorDashboard"
 @model HealthApp.Razor.Pages.Doctor.DoctorDashboardModel
+@{
+    <h2>Scheduled Appointments</h2>
 
-<h2>Scheduled Appointments</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
-@if (Model.Appointments.Count == 0)
-{
-    <p>No appointments scheduled.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Patient</th>
-                <th>Email</th>
-                <th>Appointment Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var appointment in Model.Appointments)
-            {
+    @if (Model.Appointments.Count == 0)
+    {
+        <p>No appointments scheduled.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@appointment.Patient.FirstName @appointment.Patient.LastName</td>
-                    <td>@appointment.Patient.Email</td>
-                    <td>@appointment.AppointmentDate.ToString("MM/dd/yyyy HH:mm")</td>
-                    <td>@appointment.Status</td>
-                    <td>
-                        @if (!appointment.IsCanceled && appointment.Status == "Pending")
-                        {
-                            <div style="display: flex; gap: 10px;">
-                                <form method="post" asp-page-handler="Approve" asp-route-id="@appointment.Id">
-                                    <button class="btn btn-success">Approve</button>
-                                </form>
-                                <form method="post" asp-page-handler="Reject" asp-route-id="@appointment.Id">
-                                    <button class="btn btn-danger">Reject</button>
-                                </form>
-                            </div>
-                        }
-                        else
-                        {
-                            <span class="text-muted">No actions available</span>
-                        }
-                    </td>
+                    <th>Patient</th>
+                    <th>Email</th>
+                    <th>Appointment Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var appointment in Model.Appointments)
+                {
+                    <tr>
+                        <td>@appointment.Patient.FirstName @appointment.Patient.LastName</td>
+                        <td>@appointment.Patient.Email</td>
+                        <td>@appointment.AppointmentDate.ToString("MM/dd/yyyy HH:mm")</td>
+                        <td>@appointment.Status</td>
+                        <td>
+                            @if (!appointment.IsCanceled && appointment.Status == "Pending")
+                            {
+                                <div style="display: flex; gap: 10px;">
+                                    <form method="post" asp-page-handler="Approve" asp-route-id="@appointment.Id">
+                                        <button class="btn btn-success">Approve</button>
+                                    </form>
+                                    <form method="post" asp-page-handler="Reject" asp-route-id="@appointment.Id">
+                                        <button class="btn btn-danger">Reject</button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No actions available</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }

@@ -1,40 +1,41 @@
 ﻿@page "/MyAppointments"
 @model HealthApp.Razor.Pages.Patient.MyAppointmentsModel
+@{
+    <h2>My Appointments</h2>
 
-<h2>My Appointments</h2>
-
-@if (Model.Appointments.Count == 0)
-{
-    <p>You don't have any appointments at the moment.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Doctor</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var appointment in Model.Appointments)
-            {
+    @if (Model.Appointments.Count == 0)
+    {
+        <p>You don't have any appointments at the moment.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@appointment.Doctor.Name</td>
-                    <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@(appointment.IsCanceled ? "Canceled" : "Active")</td>
-                    <td>
-                        @if (!appointment.IsCanceled)
-                        {
-                            <form method="post" asp-page-handler="Cancel" asp-route-id="@appointment.Id">
-                                <button class="btn btn-danger">Cancel</button>
-                            </form>
-                        }
-                    </td>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var appointment in Model.Appointments)
+                {
+                    <tr>
+                        <td>@appointment.Doctor.Name</td>
+                        <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@(appointment.IsCanceled ? "Canceled" : "Active")</td>
+                        <td>
+                            @if (!appointment.IsCanceled)
+                            {
+                                <form method="post" asp-page-handler="Cancel" asp-route-id="@appointment.Id">
+                                    <button class="btn btn-danger">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
