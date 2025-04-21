@@ -39,7 +39,7 @@
                             if (User.IsInRole("Doctor"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Doctor/Doctor">Doctor</a>
+                                    <a class="nav-link text-dark" asp-page="/Doctor/DoctorDashboard">Appointment</a>
                                 </li>
                             }
                             if (User.IsInRole("Patient"))
@@ -48,7 +48,10 @@
                                     <a class="nav-link text-dark" asp-area="" asp-page="/Patient/PatientDashboard">Patient</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Patient/ScheduleAppointment">Appointment</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Patient/ScheduleAppointment">Create New Appointment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Patient/MyAppointments">My Appointment</a>
                                 </li>
                             }
                         }

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using HealthApp.Razor.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthApp.Razor.Pages.Patient
 {
+    [Authorize(Roles = "Patient")]
     public class ScheduleAppointmentModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -46,6 +48,12 @@ namespace HealthApp.Razor.Pages.Patient
                 return Page();
             }
 
+            if (Appointment.DoctorId == 0)
+            {
+                ModelState.AddModelError("DoctorId", "Please select a doctor.");
+                OnGet();
+                return Page();
+            }
 
             if (!ModelState.IsValid)
             {
@@ -62,7 +70,6 @@ namespace HealthApp.Razor.Pages.Patient
                 return Page();
             }
 
-            // Redireciona para a página de sucesso
             return RedirectToPage("Success");
         }
     }

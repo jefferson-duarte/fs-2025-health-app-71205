@@ -2,24 +2,23 @@
 @model HealthApp.Razor.Pages.Patient.ScheduleAppointmentModel
 @{
 }
-<h2>Agendar Consulta</h2>
+<h2>Schedule Appointment</h2>
 
 <form method="post">
     <div>
-        <label for="doctor">Médico:</label>
+        <label for="doctor">Doctor:</label>
         <select asp-for="Appointment.DoctorId" asp-items="Model.Doctors">
-            <option value="">-- Selecione --</option>
+            <option value="">-- Select --</option>
         </select>
         <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
     </div>
 
     <div>
-        <label for="appointmentDate">Data da Consulta:</label>
+        <label for="appointmentDate">Appointment Date:</label>
         <input asp-for="Appointment.AppointmentDate" type="datetime-local" />
-        <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
     </div>
 
-    <button type="submit">Agendar Consulta</button>
-</form>
+    <button type="submit">Schedule Appointment</button>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>

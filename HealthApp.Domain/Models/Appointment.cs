@@ -11,7 +11,13 @@ namespace HealthApp.Domain.Models
     {
         public int Id { get; set; }
         public int PatientId { get; set; }
+        public Patient? Patient { get; set; }
         public int DoctorId { get; set; }
+        public Doctor? Doctor { get; set; }
         public DateTime AppointmentDate { get; set; }
+
+        public string Status { get; set; } = "Pending";
+
+        public bool IsCanceled { get; set; } = false;
     }
 }
