@@ -1,0 +1,33 @@
+﻿@page "/Admin/AppointmentsList"
+@model HealthApp.Razor.Pages.Admin.AppointmentsListModel
+@{
+    <h2>Appointments List</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in Model.Appointments)
+            {
+                <tr>
+                    <td>@appointment.Doctor.Name</td>
+                    <td>@appointment.Patient.FirstName @appointment.Patient.LastName</td>
+                    <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@appointment.Status</td>
+                    <td>
+                        <form method="post" asp-page-handler="DeleteAppointment" asp-route-id="@appointment.Id">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

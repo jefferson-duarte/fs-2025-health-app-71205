@@ -1,0 +1,29 @@
+﻿@page "/Admin/PatientsList"
+@model HealthApp.Razor.Pages.Admin.PatientsListModel
+@{
+    <h2>Patients List</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model.Patients)
+            {
+                <tr>
+                    <td>@patient.FirstName @patient.LastName</td>
+                    <td>@patient.Email</td>
+                    <td>
+                        <form method="post" asp-page-handler="DeletePatient" asp-route-id="@patient.Id">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
