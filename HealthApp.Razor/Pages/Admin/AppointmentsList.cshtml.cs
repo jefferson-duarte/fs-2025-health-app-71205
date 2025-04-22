@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HealthApp.Razor.Data;
 using HealthApp.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using DoctorModel = HealthApp.Domain.Models.Doctor;
 
 namespace HealthApp.Razor.Pages.Admin
 {
@@ -18,21 +18,35 @@ namespace HealthApp.Razor.Pages.Admin
         }
 
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public List<DoctorModel> Doctors { get; set; } = new List<DoctorModel>();
+        public string SelectedDoctor { get; set; } = string.Empty;
+        public string SelectedStatus { get; set; } = string.Empty;
+        public DateTime? SelectedDate { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string doctorId = "", string status = "", string date = "")
         {
-            Appointments = await _context.Appointments.Include(a => a.Doctor).Include(a => a.Patient).ToListAsync();
-        }
+            var query = _context.Appointments.Include(a => a.Doctor).Include(a => a.Patient).AsQueryable();
 
-        public async Task<IActionResult> OnPostDeleteAppointmentAsync(int id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment != null)
+            if (!string.IsNullOrEmpty(doctorId))
             {
-                _context.Appointments.Remove(appointment);
-                await _context.SaveChangesAsync();
+                query = query.Where(a => a.Doctor.UserId == doctorId);
+                SelectedDoctor = doctorId;
             }
-            return RedirectToPage();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(a => a.Status == status);
+                SelectedStatus = status;
+            }
+
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
+            {
+                query = query.Where(a => a.AppointmentDate.Date == parsedDate.Date);
+                SelectedDate = parsedDate;
+            }
+
+            Appointments = await query.ToListAsync();
+            Doctors = await _context.Doctors.ToListAsync();
         }
     }
 }

@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using HealthApp.Razor.Data;
 using HealthApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthApp.Razor.Pages.Patient
 {
+    [Authorize(Roles = "Patient")]
     public class MyPrescriptionsModel : PageModel
     {
         private readonly ApplicationDbContext _context;

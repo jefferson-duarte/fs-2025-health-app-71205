@@ -3,6 +3,39 @@
 @{
     <h2>Appointments List</h2>
 
+    <form method="get">
+        <div class="form-group">
+            <label for="doctor">Filter by Doctor:</label>
+            <select name="doctorId" class="form-control">
+                <option value="">-- All Doctors --</option>
+                @foreach (var doctor in Model.Doctors)
+                {
+                    <option value="@doctor.UserId" selected="@(doctor.UserId == Model.SelectedDoctor)">
+                        @doctor.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Filter by Status:</label>
+            <select name="status" class="form-control">
+                <option value="">-- All Statuses --</option>
+                <option value="Pending" selected="@(Model.SelectedStatus == "Pending")">Pending</option>
+                <option value="Approved" selected="@(Model.SelectedStatus == "Approved")">Approved</option>
+                <option value="Rejected" selected="@(Model.SelectedStatus == "Rejected")">Rejected</option>
+                <option value="Canceled" selected="@(Model.SelectedStatus == "Canceled")">Canceled</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Filter by Date:</label>
+            <input type="date" name="date" class="form-control" value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+
     <table class="table">
         <thead>
             <tr>

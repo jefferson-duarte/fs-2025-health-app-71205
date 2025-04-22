@@ -3,6 +3,39 @@
 @{
     <h2>My Appointments</h2>
 
+    <form method="get">
+        <div class="form-group">
+            <label for="doctor">Filter by Doctor:</label>
+            <select name="doctorId" class="form-control">
+                <option value="">-- All Doctors --</option>
+                @foreach (var doctor in Model.Doctors)
+                {
+                    <option value="@doctor.UserId" selected="@(doctor.UserId == Model.SelectedDoctor)">
+                        @doctor.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Filter by Status:</label>
+            <select name="status" class="form-control">
+                <option value="">-- All Statuses --</option>
+                <option value="Pending" selected="@(Model.SelectedStatus == "Pending")">Pending</option>
+                <option value="Approved" selected="@(Model.SelectedStatus == "Approved")">Approved</option>
+                <option value="Rejected" selected="@(Model.SelectedStatus == "Rejected")">Rejected</option>
+                <option value="Canceled" selected="@(Model.SelectedStatus == "Canceled")">Canceled</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Filter by Date:</label>
+            <input type="date" name="date" class="form-control" value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+
     @if (Model.Appointments.Count == 0)
     {
         <p>You don't have any appointments at the moment.</p>
@@ -24,7 +57,7 @@
                     <tr>
                         <td>@appointment.Doctor.Name</td>
                         <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>@(appointment.IsCanceled ? "Canceled" : "Active")</td>
+                        <td>@appointment.Status</td>
                         <td>
                             @if (!appointment.IsCanceled)
                             {
@@ -37,16 +70,16 @@
                 }
             </tbody>
         </table>
-
-        <nav>
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
-                        <a class="page-link" asp-route-pageNumber="@i">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
     }
+
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" asp-route-pageNumber="@i" asp-route-doctorId="@Model.SelectedDoctor" asp-route-status="@Model.SelectedStatus" asp-route-date="@Model.SelectedDate?.ToString("yyyy-MM-dd")">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
 }
