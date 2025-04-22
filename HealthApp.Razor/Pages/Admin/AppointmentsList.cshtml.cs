@@ -4,6 +4,7 @@ using HealthApp.Razor.Data;
 using HealthApp.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using DoctorModel = HealthApp.Domain.Models.Doctor;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthApp.Razor.Pages.Admin
 {
@@ -23,6 +24,16 @@ namespace HealthApp.Razor.Pages.Admin
         public string SelectedStatus { get; set; } = string.Empty;
         public DateTime? SelectedDate { get; set; }
 
+        public async Task<IActionResult> OnPostDeleteAppointmentAsync(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment != null)
+            {
+                _context.Appointments.Remove(appointment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToPage();
+        }
         public async Task OnGetAsync(string doctorId = "", string status = "", string date = "")
         {
             var query = _context.Appointments.Include(a => a.Doctor).Include(a => a.Patient).AsQueryable();
