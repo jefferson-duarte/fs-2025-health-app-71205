@@ -1,5 +1,7 @@
-﻿using HealthApp.Domain.Models;
+﻿using Bogus;
+using HealthApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthApp.Razor.Data
 {
@@ -15,6 +17,7 @@ namespace HealthApp.Razor.Data
         {
             using (var scope = serviceProvider.CreateScope())
             {
+               
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
@@ -30,91 +33,87 @@ namespace HealthApp.Razor.Data
                     }
                 }
 
-                string adminUserName = "admin@healthapp.com";
-                string adminUserEmail = "admin@healthapp.com";
                 string genericPassword = "Letmein01*";
 
-                if (await userManager.FindByEmailAsync(adminUserEmail) == null)
+                int existingDoctorsCount = await context.Doctors.CountAsync();
+
+                if (existingDoctorsCount < 5)
                 {
+                    var faker = new Faker();
 
-                    var user = new IdentityUser { UserName = adminUserName, Email = adminUserEmail, EmailConfirmed = true };
-                    await userManager.CreateAsync(user, genericPassword);
-                    await userManager.AddToRoleAsync(user, HealthAppRoles.Admin);
-                }
-
-                string doctor = "doctor@healthapp.com";
-                var userDoctor = await userManager.FindByEmailAsync(doctor);
-
-                if (userDoctor == null)
-                {
-                    var newDoctor = new IdentityUser
+                    for (int i = existingDoctorsCount; i < 5; i++)
                     {
-                        UserName = doctor,
-                        Email = doctor,
-                        EmailConfirmed = true
-                    };
+                        string firstName = faker.Name.FirstName();
+                        string lastName = faker.Name.LastName();
+                        string doctorEmail = $"{firstName.ToLower()}.{lastName.ToLower()}@healthapp.com";
 
-                    await userManager.CreateAsync(newDoctor, "Letmein01*");
-                    await userManager.AddToRoleAsync(newDoctor, HealthAppRoles.Doctor);
+                        var existingUser = await userManager.FindByEmailAsync(doctorEmail);
+                        if (existingUser == null)
+                        {
+                            var newDoctorUser = new IdentityUser
+                            {
+                                UserName = doctorEmail,
+                                Email = doctorEmail,
+                                EmailConfirmed = true
+                            };
 
-                    userDoctor = newDoctor;
-                }
+                            var result = await userManager.CreateAsync(newDoctorUser, genericPassword);
+                            if (result.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(newDoctorUser, HealthAppRoles.Doctor);
 
-                if (!context.Doctors.Any(d => d.UserId == userDoctor.Id))
-                {
-                    var doctorEntity = new Doctor
-                    {
-                        Name = "Dr. Carlos Pereira",
-                        UserId = userDoctor.Id
-                    };
+                                var doctorEntity = new Doctor
+                                {
+                                    Name = $"Dr. {firstName} {lastName}",
+                                    UserId = newDoctorUser.Id
+                                };
 
-                    context.Doctors.Add(doctorEntity);
-                    await context.SaveChangesAsync();
-                }
+                                context.Doctors.Add(doctorEntity);
+                            }
+                        }
+                    }
 
-                string patientEmail = "patient@healthapp.com";
-                var userPatient = await userManager.FindByEmailAsync(patientEmail);
-
-                if (userPatient == null)
-                {
-                    var newPatient = new IdentityUser
-                    {
-                        UserName = patientEmail,
-                        Email = patientEmail,
-                        EmailConfirmed = true
-                    };
-
-                    await userManager.CreateAsync(newPatient, "Letmein01*");
-                    await userManager.AddToRoleAsync(newPatient, HealthAppRoles.Patient);
-
-                    userPatient = newPatient;
-                }
-
-                if (!context.Patients.Any(p => p.UserId == userPatient.Id))
-                {
-                    var patientEntity = new Patient
-                    {
-                        FirstName = "John",
-                        LastName = "Doe",
-                        Email = userPatient.Email,
-                        UserId = userPatient.Id
-                    };
-
-                    context.Patients.Add(patientEntity);
                     await context.SaveChangesAsync();
                 }
 
 
-
-                if (!context.DoctorPatient.Any(dp => dp.DoctorId == userDoctor.Id && dp.PatientId == userPatient.Id))
+                int existingPatientsCount = await context.Patients.CountAsync();
+                if (existingPatientsCount < 1000)
                 {
-                    var doctorPatient = new DoctorPatient
+                    var fakerPatient = new Faker();
+                    for (int i = existingPatientsCount; i < 1000; i++)
                     {
-                        DoctorId = userDoctor.Id,
-                        PatientId = userPatient.Id
-                    };
+                        string firstName = fakerPatient.Name.FirstName();
+                        string lastName = fakerPatient.Name.LastName();
+                        string patientEmail = $"{firstName.ToLower()}.{lastName.ToLower()}@healthapp.com";
 
-                    context.DoctorPatient.Add(doctorPatient);
+                        var existingUser = await userManager.FindByEmailAsync(patientEmail);
+                        if (existingUser == null)
+                        {
+                            var newPatientUser = new IdentityUser
+                            {
+                                UserName = patientEmail,
+                                Email = patientEmail,
+                                EmailConfirmed = true
+                            };
+
+                            var result = await userManager.CreateAsync(newPatientUser, genericPassword);
+                            if (result.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(newPatientUser, HealthAppRoles.Patient);
+
+                                var patientEntity = new Patient
+                                {
+                                    FirstName = firstName,
+                                    LastName = lastName,
+                                    Email = patientEmail,
+                                    UserId = newPatientUser.Id
+                                };
+
+                                context.Patients.Add(patientEntity);
+                            }
+                        }
+                    }
                     await context.SaveChangesAsync();
                 }
             }
