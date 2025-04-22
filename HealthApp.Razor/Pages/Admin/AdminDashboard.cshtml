@@ -1,12 +1,11 @@
 ﻿@page "/AdminDashboard"
 @model HealthApp.Razor.Pages.Admin.AdminDashboardModel
 @{
+    <h2 class="text-primary fw-bold mb-4 text-center">Admin Dashboard</h2>
 
-    <h2>Admin Dashboard</h2>
-
-    <ul>
-        <li><a class="btn btn-primary" asp-page="/Admin/PatientsList">View Patients</a></li>
-        <li><a class="btn btn-primary" asp-page="/Admin/DoctorsList">View Doctors</a></li>
-        <li><a class="btn btn-primary" asp-page="/Admin/AppointmentsList">View Appointments</a></li>
-    </ul>
+    <div class="d-flex flex-column align-items-center gap-3">
+        <a class="btn btn-outline-primary w-75" asp-page="/Admin/PatientsList">View Patients</a>
+        <a class="btn btn-outline-success w-75" asp-page="/Admin/DoctorsList">View Doctors</a>
+        <a class="btn btn-outline-danger w-75" asp-page="/Admin/AppointmentsList">View Appointments</a>
+    </div>
 }

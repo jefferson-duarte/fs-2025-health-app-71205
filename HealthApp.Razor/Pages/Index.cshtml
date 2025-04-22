@@ -1,10 +1,58 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4 text-primary fw-bold">Welcome to HealthApp</h1>
+    <p class="fs-5 text-muted">Your trusted platform for managing medical appointments and prescriptions.</p>
+
+    <div class="mt-4">
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success btn-lg">Register</a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-info btn-lg">Login</a>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="container">
+        <h2 class="text-secondary fw-bold">Why Choose HealthApp?</h2>
+        <p class="fs-6 text-muted">
+            HealthApp is designed to simplify healthcare management, allowing patients to book appointments,
+            doctors to manage prescriptions, and administrators to oversee medical records efficiently.
+        </p>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success fw-bold">Easy Scheduling</h5>
+                        <p class="card-text">Book and manage appointments with just a few clicks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-info fw-bold">Prescription Management</h5>
+                        <p class="card-text">Doctors can create and track prescriptions effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning fw-bold">Secure Medical Records</h5>
+                        <p class="card-text">Confidential data is protected with the latest security measures.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <p>Learn more about <a href="https://learn.microsoft.com/aspnet/core" class="text-decoration-none">building Web apps with ASP.NET Core</a>.</p>
 </div>

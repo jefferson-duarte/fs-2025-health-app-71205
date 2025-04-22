@@ -1,49 +1,58 @@
 ﻿@page "/MyAppointments"
 @model HealthApp.Razor.Pages.Patient.MyAppointmentsModel
 @{
-    <h2>My Appointments</h2>
+    <h2 class="text-primary fw-bold mb-4">My Appointments</h2>
+    @if (ViewData["CancelError"] != null)
+    {
+        <div class="alert alert-danger">
+            @ViewData["CancelError"]
+        </div>
+    }
 
-    <form method="get">
-        <div class="form-group">
-            <label for="doctor">Filter by Doctor:</label>
-            <select name="doctorId" class="form-control">
-                <option value="">-- All Doctors --</option>
-                @foreach (var doctor in Model.Doctors)
-                {
-                    <option value="@doctor.UserId" selected="@(doctor.UserId == Model.SelectedDoctor)">
-                        @doctor.Name
-                    </option>
-                }
-            </select>
+
+    <form method="get" class="p-4 bg-light shadow rounded">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="doctor" class="form-label">Filter by Doctor:</label>
+                <select name="doctorId" class="form-select">
+                    <option value="">-- All Doctors --</option>
+                    @foreach (var doctor in Model.Doctors)
+                    {
+                        <option value="@doctor.UserId" selected="@(doctor.UserId == Model.SelectedDoctor)">
+                            @doctor.Name
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="status" class="form-label">Filter by Status:</label>
+                <select name="status" class="form-select">
+                    <option value="">-- All Statuses --</option>
+                    <option value="Pending" selected="@(Model.SelectedStatus == "Pending")">Pending</option>
+                    <option value="Approved" selected="@(Model.SelectedStatus == "Approved")">Approved</option>
+                    <option value="Rejected" selected="@(Model.SelectedStatus == "Rejected")">Rejected</option>
+                    <option value="Canceled" selected="@(Model.SelectedStatus == "Canceled")">Canceled</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="date" class="form-label">Filter by Date:</label>
+                <input type="date" name="date" class="form-control" value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="status">Filter by Status:</label>
-            <select name="status" class="form-control">
-                <option value="">-- All Statuses --</option>
-                <option value="Pending" selected="@(Model.SelectedStatus == "Pending")">Pending</option>
-                <option value="Approved" selected="@(Model.SelectedStatus == "Approved")">Approved</option>
-                <option value="Rejected" selected="@(Model.SelectedStatus == "Rejected")">Rejected</option>
-                <option value="Canceled" selected="@(Model.SelectedStatus == "Canceled")">Canceled</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="date">Filter by Date:</label>
-            <input type="date" name="date" class="form-control" value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <button type="submit" class="btn btn-primary mt-3 w-100">Apply Filters</button>
     </form>
 
     @if (Model.Appointments.Count == 0)
     {
-        <p>You don't have any appointments at the moment.</p>
+        <p class="text-muted text-center mt-4">You don't have any appointments at the moment.</p>
     }
     else
     {
-        <table class="table">
-            <thead>
+        <table class="table table-striped table-hover mt-4">
+            <thead class="table-dark">
                 <tr>
                     <th>Doctor</th>
                     <th>Date</th>
@@ -57,12 +66,16 @@
                     <tr>
                         <td>@appointment.Doctor.Name</td>
                         <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>@appointment.Status</td>
+                        <td>
+                            <span class="badge bg-@(appointment.Status == "Approved" ? "success" : appointment.Status == "Pending" ? "warning" : "danger")">
+                                @appointment.Status
+                            </span>
+                        </td>
                         <td>
                             @if (!appointment.IsCanceled)
                             {
                                 <form method="post" asp-page-handler="Cancel" asp-route-id="@appointment.Id">
-                                    <button class="btn btn-danger">Cancel</button>
+                                    <button class="btn btn-danger btn-sm">Cancel</button>
                                 </form>
                             }
                         </td>
@@ -73,7 +86,7 @@
     }
 
     <nav>
-        <ul class="pagination">
+        <ul class="pagination justify-content-center mt-4">
             @for (int i = 1; i <= Model.TotalPages; i++)
             {
                 <li class="page-item @(Model.CurrentPage == i ? "active" : "")">

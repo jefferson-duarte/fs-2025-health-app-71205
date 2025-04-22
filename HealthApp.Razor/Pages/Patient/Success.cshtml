@@ -1,7 +1,9 @@
 ﻿@page "Success"
 @model HealthApp.Razor.Pages.Patient.SuccessModel
 @{
-    <h2>Appointment Scheduled Successfully!</h2>
-    <p>Your appointment has been successfully scheduled.</p>
-    <a asp-page="/Patient/ScheduleAppointment">Go back to schedule another appointment</a>
+    <div class="text-center mt-5">
+        <h2 class="text-success fw-bold">Appointment Scheduled Successfully!</h2>
+        <p class="fs-5 text-muted">Your appointment has been successfully scheduled.</p>
+        <a asp-page="/Patient/ScheduleAppointment" class="btn btn-primary mt-3">Schedule Another Appointment</a>
+    </div>
 }

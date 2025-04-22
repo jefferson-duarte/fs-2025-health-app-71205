@@ -1,46 +1,46 @@
 ﻿@page "/CreatePrescription"
 @model HealthApp.Razor.Pages.Doctor.CreatePrescriptionModel
 @{
-    <h2>Create Prescription</h2>
+    <h2 class="text-primary fw-bold mb-4">Create Prescription</h2>
 
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-        <div class="alert alert-danger">@Model.ErrorMessage</div>
+        <div class="alert alert-danger text-center fw-bold">@Model.ErrorMessage</div>
     }
 
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        <div class="alert alert-success text-center fw-bold">@TempData["SuccessMessage"]</div>
     }
 
-    <form method="post">
+    <form method="post" class="p-4 bg-light shadow rounded">
         <div asp-validation-summary="All" class="text-danger"></div>
 
-        <div>
-            <label for="patient">Select Patient:</label>
-            <select asp-for="Prescription.PatientId" asp-items="Model.Patients">
+        <div class="mb-3">
+            <label for="patient" class="form-label">Select Patient:</label>
+            <select asp-for="Prescription.PatientId" asp-items="Model.Patients" class="form-select">
                 <option value="">-- Select --</option>
             </select>
             <span asp-validation-for="Prescription.PatientId" class="text-danger"></span>
         </div>
 
-        <div>
-            <label for="medication">Medication:</label>
-            <input asp-for="Prescription.Medication" class="form-control" />
+        <div class="mb-3">
+            <label for="medication" class="form-label">Medication:</label>
+            <input asp-for="Prescription.Medication" class="form-control" placeholder="Enter medication name..." />
             <span asp-validation-for="Prescription.Medication" class="text-danger"></span>
         </div>
 
-        <div>
-            <label for="dosage">Dosage Instructions:</label>
-            <input asp-for="Prescription.Dosage" class="form-control" />
+        <div class="mb-3">
+            <label for="dosage" class="form-label">Dosage Instructions:</label>
+            <input asp-for="Prescription.Dosage" class="form-control" placeholder="e.g., Take twice a day..." />
             <span asp-validation-for="Prescription.Dosage" class="text-danger"></span>
         </div>
 
-        <div>
-            <label for="notes">Additional Notes:</label>
-            <textarea asp-for="Prescription.Notes" class="form-control"></textarea>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Additional Notes:</label>
+            <textarea asp-for="Prescription.Notes" class="form-control" rows="3" placeholder="Optional notes..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary w-100">Submit Prescription</button>
     </form>
 }

@@ -35,6 +35,17 @@ namespace HealthApp.Razor.Data
 
                 string genericPassword = "Letmein01*";
 
+                string adminUserName = "admin@healthapp.com";
+                string adminUserEmail = "admin@healthapp.com";
+
+                if (await userManager.FindByEmailAsync(adminUserEmail) == null)
+                {
+
+                    var user = new IdentityUser { UserName = adminUserName, Email = adminUserEmail, EmailConfirmed = true };
+                    await userManager.CreateAsync(user, genericPassword);
+                    await userManager.AddToRoleAsync(user, HealthAppRoles.Admin);
+                }
+
                 int existingDoctorsCount = await context.Doctors.CountAsync();
 
                 if (existingDoctorsCount < 5)

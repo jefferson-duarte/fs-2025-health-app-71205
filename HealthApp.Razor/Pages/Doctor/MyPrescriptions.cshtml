@@ -2,17 +2,16 @@
 @model HealthApp.Razor.Pages.Doctor.MyPrescriptionsModel
 
 @{
-
-    <h2>My Prescriptions</h2>
+    <h2 class="text-primary fw-bold mb-4">My Prescriptions</h2>
 
     @if (Model.Prescriptions.Count == 0)
     {
-        <p>You haven't issued any prescriptions yet.</p>
+        <p class="text-muted text-center mt-4">You haven't issued any prescriptions yet.</p>
     }
     else
     {
-        <table class="table">
-            <thead>
+        <table class="table table-striped table-hover mt-4">
+            <thead class="table-dark text-center">
                 <tr>
                     <th>Patient</th>
                     <th>Medication</th>
@@ -29,14 +28,14 @@
                         <td>@prescription.Medication</td>
                         <td>@prescription.Dosage</td>
                         <td>@prescription.DateIssued.ToString("dd/MM/yyyy")</td>
-                        <td>@prescription.Notes</td>
+                        <td class="text-muted">@prescription.Notes</td>
                     </tr>
                 }
             </tbody>
         </table>
 
         <nav>
-            <ul class="pagination">
+            <ul class="pagination justify-content-center mt-4">
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
